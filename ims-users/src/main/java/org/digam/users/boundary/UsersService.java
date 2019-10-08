@@ -1,7 +1,9 @@
 package org.digam.users.boundary;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,9 +18,9 @@ public class UsersService {
 	@PersistenceContext
 	private EntityManager em;
 
-	public List<User> getAll() {
+	public Set<User> getAll() {
 		List<User> list = em.createQuery("FROM User u", User.class).getResultList();
-		return list;
+		return new LinkedHashSet(list);
 	}
 
 	public Optional<User> get(Long id) {

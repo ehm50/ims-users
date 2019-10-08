@@ -28,18 +28,7 @@ public class UsersResource {
 
 	@GET
 	public Response getAll() {
-		List<User> users = service.getAll(); // queries database for all users
-		GenericEntity<List<User>> list = new GenericEntity<List<User>>(users) {
-		};
-		return Response.ok(list).build();
-	}
-
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response add(User newUser, @Context UriInfo uriInfo) {
-		service.add(newUser);
-		return Response.created(getLocation(uriInfo, newUser.getId())).build();
+		return Response.ok(service.getAll()).build();
 	}
 
 	@GET
@@ -51,6 +40,14 @@ public class UsersResource {
 			return Response.ok(userFound.get()).build();
 		}
 		return Response.status(Response.Status.NOT_FOUND).build();
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response add(User newUser, @Context UriInfo uriInfo) {
+		service.add(newUser);
+		return Response.created(getLocation(uriInfo, newUser.getId())).build();
 	}
 
 	@PUT
