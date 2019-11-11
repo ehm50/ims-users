@@ -7,8 +7,10 @@ import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.digam.users.entity.User;
 
@@ -17,6 +19,20 @@ public class UsersService {
 
 	@PersistenceContext
 	private EntityManager em;
+
+	public User isValid(String username, String password) {
+		TypedQuery<User> query = em.createQuery(
+				"SELECT u from User u WHERE u.credential.username = :username and u.credential.password = :password",
+				User.class);
+		query.setParameter("username", username);
+		query.setParameter("password", password);
+		try {
+			return query.getSingleResult();
+		} catch (NoResultException nre) {
+		}
+
+		return null;
+	}
 
 	public Set<User> getAll() {
 		List<User> list = em.createQuery("FROM User u", User.class).getResultList();

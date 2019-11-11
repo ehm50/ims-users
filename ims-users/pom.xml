@@ -15,6 +15,12 @@
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
 	<dependencies>
+		<!-- This project requires JWT security lib -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ims-security-library</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/javax/javaee-api -->
 		<dependency>
 			<groupId>javax</groupId>

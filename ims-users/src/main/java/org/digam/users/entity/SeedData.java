@@ -3,22 +3,31 @@ package org.digam.users.entity;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.inject.Inject;
+
+import org.digam.users.boundary.UsersService;
 
 @Singleton
 @Startup
 public class SeedData {
-
-	@PersistenceContext
-	private EntityManager em;
-
-	@PostConstruct
-	public void init() {
-		// Dummy data to begin with
-		User adminUser = new User("Admin", "admin@gmx.ch");
-		em.persist(adminUser);
-		User guestUser = new User("Guest", "guest@gmx.ch");
-		em.persist(guestUser);
-	}
+    
+    @Inject
+    private UsersService service;
+    
+    @PostConstruct
+    public void init() {
+        //Dummy accounts
+        User adminUser = new User();
+        adminUser.setCredential(new Credential("admin", "admin"));
+        adminUser.setEmail("admin@digam.org");
+        adminUser.setName("Admin");
+        service.add(adminUser);
+        
+        User guestUser = new User();
+        guestUser.setCredential(new Credential("guest", "guest"));
+        guestUser.setEmail("guest@digam.org");
+        guestUser.setName("Guest");
+        
+        service.add(guestUser);
+    }
 }
